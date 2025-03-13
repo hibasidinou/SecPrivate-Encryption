@@ -1,2 +1,2 @@
-flasl==2.3.4
+flask==3.1.0
 cryptography==41.0.3

@@ -62,37 +62,37 @@ def decrypt_rsa(data: str, private_key) -> str:
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    result = ""
+    
     if request.method == "POST":
+        result = ""
         action = request.form.get("action")
         message = request.form.get("message")
         crypto_type = request.form.get("crypto_type")
 
-        if not message:
-            result = "Please enter a message."
+        if message.strip() == "":
+            result = "Write a message instead of merely using spaces in your text."
             return render_template("index.html", result=result)
 
         try:
             if crypto_type == "AES":
                 if action == "encrypt":
                     result = encrypt_aes(message, AES_KEY)
-                elif action == "decrypt":
-                    result = decrypt_aes(message, AES_KEY)
                 else:
-                    result = "Invalid action."
+                    result = decrypt_aes(message, AES_KEY)
 
-            elif crypto_type == "RSA":
+            else:
                 if action == "encrypt":
                     result = encrypt_rsa(message, PUBLIC_KEY)
-                elif action == "decrypt":
-                    result = decrypt_rsa(message, PRIVATE_KEY)
                 else:
-                    result = "Invalid action."
+                    result = decrypt_rsa(message, PRIVATE_KEY)
 
         except Exception as e:
             result = f"An error occurred: {e}"
 
-    return render_template("index.html", result=result)
+        return render_template("index.html", result=result)
+    else:
+         result = ""
+         return render_template("index.html", result=result)
 
 
 if __name__ == "__main__":
